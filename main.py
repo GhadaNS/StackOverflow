@@ -8,11 +8,10 @@ import P1Q3_1
 import P1Q3_2
 import P1Q4
 import P2Q1
+import P2Q2
 
 
 # Reading the edges' set file ------------------------------------------------------------------------------------------
-import P2Q2
-
 net = pd.read_csv('a.txt', sep=" ", header=None)
 net.columns = ["src", "dst", "tstamp"]  # Labeling columns for easier data manipulation
 net = net.sort_values(by=['tstamp'])  # Just in case Edges aren't ordered by time stamp
@@ -68,7 +67,7 @@ for i in range(1, N + 1):
         gc.collect()
 
 # Graph ----------------------------------------------------------------------------------------------------------------
-P1Q3_2.GraphVandE(nE, nV)
+# P1Q3_2.GraphVandE(nE, nV)
 # P1Q3_2.PlotHisto(nV, nE).HistogramVandE()
 
 # Centrality -----------------------------------------------------------------------------------------------------------
@@ -76,7 +75,7 @@ for i in range(1, N + 1):
     fname = "Edges-" + str(i) + ".txt"
     if os.stat(fname).st_size != 0:
         G = nx.read_edgelist(fname)  # Reading the graph from previously created edge list
-        P1Q4.Cent(G, i)
+        # P1Q4.Cent(G, i)
 
 # Vstar and Estar sets -------------------------------------------------------------------------------------------------
 P2Q1.VstarEstar(N).VandEstar()
