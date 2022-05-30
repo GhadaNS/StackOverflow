@@ -1,7 +1,8 @@
-import csv
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import csv
+import gc
 
 
 class VstarEstar:
@@ -13,40 +14,43 @@ class VstarEstar:
 
     def VandEstar(self):
         for j in range(1, self.N):
+            # Creation of V*[tj-1,tj+1]
             Vprev = pd.read_csv('vertices-set%s.csv' % j)  # V[tj-1,tj]
             Vnext = pd.read_csv('vertices-set%s.csv' % (j + 1))  # V[tj,tj+1]
-            # Vstar = set(Vprev).intersection(set(Vnext))
-            Vstar = [i for i in Vprev if i in Vnext]  # V*[tj-1,tj+1]
-            self.nVstar.append(len(Vstar))
+            Vstar = [i for i in Vprev if i in Vnext]  # V*[tj-1,tj+1] intersect(V[tj-1,tj], V[tj,tj+1])
+            del Vprev, Vnext
+            gc.collect()
+            self.nVstar.append(len(Vstar))  # |V*[tj-1,tj+1]|
             with open("Vstar" + str(j) + ".csv", 'w') as f:
                 csv.writer(f).writerow(Vstar)
 
-        for j in range(1, self.N):
+            # Creation of E*[tj-1,tj]
             Eprev = pd.read_csv('Edges-set%s.csv' % j, header=None)
             Eprev.columns = ["u", "v"]
-            Vstar = list(pd.read_csv('Vstar%s.csv' % j))
             Vstar = [int(x) for x in Vstar]
             Estar = [Eprev.iloc[i] for i in range(len(Eprev.index)) if
                      Eprev.u.iloc[i] in Vstar and Eprev.v.iloc[i] in Vstar]
+            del Eprev
+            gc.collect()
             self.nEstar1.append(len(Estar))
-            fname = "Estar[j-1,j]" + str(j) + ".csv"
-            with open(fname, 'w') as f:
+            with open("Estar[j-1,j]" + str(j) + ".csv", 'w') as f:
                 for i in range(len(Estar)):
                     csv.writer(f, delimiter=' ').writerow(Estar[i])
 
-        for j in range(1, self.N):
-            Eprev = pd.read_csv('Edges-set%s.csv' % (j + 1), header=None)
-            Eprev.columns = ["u", "v"]
-            Vstar = list(pd.read_csv('Vstar%s.csv' % j))
+            # Creation of E*[tj,tj+1]
+            Enext = pd.read_csv('Edges-set%s.csv' % (j + 1), header=None)
+            Enext.columns = ["u", "v"]
             Vstar = [int(x) for x in Vstar]
-            Estar = [Eprev.iloc[i] for i in range(len(Eprev.index)) if
-                     Eprev.u.iloc[i] in Vstar and Eprev.v.iloc[i] in Vstar]
+            Estar = [Enext.iloc[i] for i in range(len(Enext.index)) if
+                     Enext.u.iloc[i] in Vstar and Enext.v.iloc[i] in Vstar]
+            del Enext, Vstar
+            gc.collect()
             self.nEstar2.append(len(Estar))
-            fname = "Estar[j,j+1]" + str(j) + ".csv"
-            with open(fname, 'w') as f:
+            with open("Estar[j,j+1]" + str(j) + ".csv", 'w') as f:
                 for i in range(len(Estar)):
                     csv.writer(f, delimiter=' ').writerow(Estar[i])
 
+    def GraphVandEstar(self):
         plt.subplot()
         plt.plot(self.nVstar, 'c.-', label='|V*|')
         plt.plot(self.nEstar1, 'm.-', label='|E*[j-1,j]|')
@@ -59,3 +63,5 @@ class VstarEstar:
         plt.savefig('Time_evolution_of_nVstar_&_nEstar.png', format="PNG")
         plt.show()
         plt.close()
+        del self.nVstar, self.nEstar1, self.nEstar2
+        gc.collect()

@@ -34,7 +34,7 @@ print('T', t)
 # Subgraphs' Edge list creation ----------------------------------------------------------------------------------------
 Sub = P1Q2.SubGraph(N)
 Sub.SubgraphEdgeLists(net, t)
-del net
+del net, t
 gc.collect()
 
 # Subgraphs' Adjacency Matrices Creation -------------------------------------------------------------------------------
@@ -63,22 +63,30 @@ for i in range(1, N + 1):
         P1Q3_1.SaveVertices(V, i)
         nE.append(len(E.index))
         nV.append(len(V))
-        del G, E
+        del G, E, V
         gc.collect()
 
-# Graph ----------------------------------------------------------------------------------------------------------------
+# |V| and |E| time evolution Graph -------------------------------------------------------------------------------------
 # P1Q3_2.GraphVandE(nE, nV)
 # P1Q3_2.PlotHisto(nV, nE).HistogramVandE()
+del nV, nE
+gc.collect()
 
-# Centrality -----------------------------------------------------------------------------------------------------------
+# Centrality Measures --------------------------------------------------------------------------------------------------
 for i in range(1, N + 1):
     fname = "Edges-" + str(i) + ".txt"
     if os.stat(fname).st_size != 0:
         G = nx.read_edgelist(fname)  # Reading the graph from previously created edge list
         # P1Q4.Cent(G, i)
+    del G
+    gc.collect()
 
-# Vstar and Estar sets -------------------------------------------------------------------------------------------------
-P2Q1.VstarEstar(N).VandEstar()
+# V* and E* sets -------------------------------------------------------------------------------------------------------
+VEstar = P2Q1.VstarEstar(N)
+VEstar.VandEstar()
+
+# |V*| and |E*| time evolution Graph -----------------------------------------------------------------------------------
+# VEstar.GraphVandEstar()
 
 # Similarity Matrices --------------------------------------------------------------------------------------------------
 P2Q2.Similarities(N)

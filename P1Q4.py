@@ -1,3 +1,5 @@
+import gc
+
 from matplotlib import pyplot as plt
 import networkx as nx
 import numpy as np
@@ -32,6 +34,8 @@ def Cent(G, i):
     w = csv.writer(open("Degree_centrality_G" + str(i) + ".csv", "w"))
     for key, val in dc.items():
         w.writerow([key, val])
+    del dc
+    gc.collect()
 
     # Closeness Centrality
     cc = nx.closeness_centrality(G)
@@ -48,6 +52,8 @@ def Cent(G, i):
     w = csv.writer(open("Closeness_centrality_G" + str(i) + ".csv", "w"))
     for key, val in cc.items():
         w.writerow([key, val])
+    del cc
+    gc.collect()
 
     # Betweenness Centrality
     bc = nx.betweenness_centrality(G)
@@ -58,6 +64,8 @@ def Cent(G, i):
     w = csv.writer(open("Betweenness_centrality_G" + str(i) + ".csv", "w"))
     for key, val in bc.items():
         w.writerow([key, val])
+    del bc
+    gc.collect()
 
     # Eigenvector Centrality
     ec = nx.eigenvector_centrality(G, 1000)
@@ -69,6 +77,8 @@ def Cent(G, i):
     w = csv.writer(open("Eigenvector_centrality_G" + str(i) + ".csv", "w"))
     for key, val in ec.items():
         w.writerow([key, val])
+    del ec
+    gc.collect()
 
     # Katz Centrality
     kc = nx.katz_centrality(G)
@@ -79,6 +89,8 @@ def Cent(G, i):
     w = csv.writer(open("katz_centrality_graph_" + str(i) + ".csv", "w"))
     for key, val in kc.items():
         w.writerow([key, val])
+    del kc
+    gc.collect()
 
     plt.tight_layout()
     plt.savefig('Centrality_Measures_G' + str(i) + '.png', format="PNG")
