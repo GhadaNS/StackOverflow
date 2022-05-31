@@ -55,6 +55,8 @@ for i in range(1, N + 1):
     if os.stat(fname).st_size == 0:  # In case some time intervals have empty Subgraphs
         nE.append(0)  # The number of both vertices & edges is 0
         nV.append(0)
+        open("VerticesSet-" + str(i) + ".csv", 'w').close()
+        open("EdgesSet-" + str(i) + ".csv", 'w').close()
     else:
         G = pd.read_csv(fname, sep=' ', header=None)
         E = P1Q3_1.GetEdges(G)
@@ -78,8 +80,8 @@ for i in range(1, N + 1):
     if os.stat(fname).st_size != 0:
         G = nx.read_edgelist(fname)  # Reading the graph from previously created edge list
         # P1Q4.Cent(G, i)
-    del G
-    gc.collect()
+        del G
+        gc.collect()
 
 # V* and E* sets -------------------------------------------------------------------------------------------------------
 VEstar = P2Q1.VstarEstar(N)
@@ -90,3 +92,14 @@ VEstar.VandEstar()
 
 # Similarity Matrices --------------------------------------------------------------------------------------------------
 P2Q2.Similarities(N)
+
+# ACC Function ---------------------------------------------------------------------------------------------------------
+for j in range(1, N):
+    for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
+        if os.stat('Estar[j-1,j]-%s.csv' % j).st_size == 0:  # In case some time intervals have empty Subgraphs
+            Eprev = pd.DataFrame()
+            Sx = pd.DataFrame()
+        else:
+            Eprev = pd.read_csv('Estar[j-1,j]-%s.csv' % j)
+            Sx = pd.read_csv(x + '_Estar[j-1,j]-%s.csv' % j)
+        # Rx =

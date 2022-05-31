@@ -8,7 +8,7 @@ def GetEdges(G):
 
 
 def SaveEdges(E, i):
-    with open("Edges-set" + str(i) + ".csv", "w") as f:
+    with open("EdgesSet-" + str(i) + ".csv", "w") as f:
         w = csv.writer(f)
         for j in range(len(E.index)):
             w.writerow(E.iloc[j, :])
@@ -22,5 +22,5 @@ def GetVertices(G):
 
 
 def SaveVertices(V, i):
-    with open("Vertices-set" + str(i) + ".csv", 'w') as f:
+    with open("VerticesSet-" + str(i) + ".csv", 'w') as f:
         csv.writer(f).writerow(V)
