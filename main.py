@@ -1,5 +1,3 @@
-import gc
-import os
 import pandas as pd
 import networkx as nx
 import P1Q1
@@ -9,14 +7,16 @@ import P1Q3_2
 import P1Q4
 import P2Q1
 import P2Q2
-
+import P3Q1
+import gc
+import os
 
 # Reading the edges' set file ------------------------------------------------------------------------------------------
-net = pd.read_csv('a.txt', sep=" ", header=None)
+'''net = pd.read_csv('a.txt', sep=" ", header=None)
 net.columns = ["src", "dst", "tstamp"]  # Labeling columns for easier data manipulation
 net = net.sort_values(by=['tstamp'])  # Just in case Edges aren't ordered by time stamp
 net = net.reset_index(drop=True)  # Resetting indices after reordering
-print(net)
+print(net)'''
 
 # Getting N ------------------------------------------------------------------------------------------------------------
 N = int(input('Please enter N: '))
@@ -27,7 +27,7 @@ while True:  # Input conflict (In case user inputs an invalid value
         break
 
 # Time Partition -------------------------------------------------------------------------------------------------------
-t_min, t_max, t = P1Q1.TPartition(net, N)
+'''t_min, t_max, t = P1Q1.TPartition(net, N)
 print("t_min %s\nt_max" % t_min, t_max)
 print('T', t)
 
@@ -91,15 +91,29 @@ VEstar.VandEstar()
 # VEstar.GraphVandEstar()
 
 # Similarity Matrices --------------------------------------------------------------------------------------------------
-P2Q2.Similarities(N)
+P2Q2.Similarities(N)'''
 
 # ACC Function ---------------------------------------------------------------------------------------------------------
-for j in range(1, N):
-    for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
-        if os.stat('Estar[j-1,j]-%s.csv' % j).st_size == 0:  # In case some time intervals have empty Subgraphs
-            Eprev = pd.DataFrame()
-            Sx = pd.DataFrame()
-        else:
-            Eprev = pd.read_csv('Estar[j-1,j]-%s.csv' % j)
-            Sx = pd.read_csv(x + '_Estar[j-1,j]-%s.csv' % j)
-        # Rx =
+for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
+    AcObj = P3Q1.AccFunc(N, x)
+    R = AcObj.PrvSimVal()
+    lR = len(R)
+    print(R)
+    RMin, RMax = IdMin, IdMax = 0, -1  # Min and Max values indices of R
+    ESet = 'Estar[j-1,j]'
+    ACC_best = AcObj.ACC((R[IdMin], R[IdMax]), ESet)
+    itr = 0
+    while IdMin < lR - 1 and itr < 1:
+        ACC = AcObj.ACC((R[IdMin + 1], R[IdMax]), ESet)
+        if ACC > ACC_best:
+            ACC_best = ACC
+            RMin = IdMin + 1
+        ACC = AcObj.ACC((R[IdMin], R[IdMax - 1]), ESet)
+        if ACC > ACC_best:
+            ACC_best = ACC
+            RMax = IdMax - 1
+        IdMin += 1
+        IdMax += 1
+        itr += 1
+    print('Best', x, 'Accuracy is', ACC_best, 'In', (R[RMin], R[RMax]))
+    print('From', AcObj.AccList, '\n')
