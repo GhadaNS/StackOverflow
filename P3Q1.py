@@ -6,10 +6,11 @@ import gc
 
 
 class AccFunc:
-    def __init__(self, N, x):
+    def __init__(self, N, x, ESet):
         self.N = N
         self.x = x
         self.AccList = None
+        self.ESet = ESet
 
     def PrvSimVal(self):  # Estar[j-1,j] Similarity values for training purposes
         R = set()
@@ -22,13 +23,13 @@ class AccFunc:
         gc.collect()
         return R
 
-    def ACC(self, Rx, ESet):
+    def ACC(self, Rx):
         Acc = []
         for i in range(1, self.N):
-            G = nx.read_edgelist(ESet + '-%s.csv' % i)
+            G = nx.read_edgelist(self.ESet + '-%s.csv' % i)
             if not nx.is_empty(G):
                 Vstar = list(pd.read_csv('Vstar-%s.csv' % i))
-                Sx = pd.read_csv(self.x + '_' + ESet + '-%s.csv' % i, index_col=0)
+                Sx = pd.read_csv(self.x + '_Estar[j-1,j]-%s.csv' % i, index_col=0)
                 Sx.index = Sx.index.map(str)  # Since indices are read as ints we convert them back to str for 'loc' use
                 E = G.edges()
                 # |E0| = |V* x V*| eq(10)
@@ -39,7 +40,7 @@ class AccFunc:
                     for v in Vstar:
                         if u < v and Rx[0] < Sx.loc[u, v] < Rx[-1]:
                             Ex.add((u, v))'''  # These lines are resumed in the next line list comprehension
-                Ex = [(u, v) for u in Vstar for v in Vstar if u < v and Rx[0] < Sx.loc[u, v] < Rx[-1]]
+                Ex = [(u, v) for u in Vstar for v in Vstar if u < v and Rx[0] <= Sx.loc[u, v] <= Rx[-1]]
                 EXEx = [e for e in E if e in Ex]  # Intersection(E, Ex) for the calculation of TPR & TNR
                 # Some lengths for the calculation of TPR & TNR - calculate them once for all
                 lE, lEXEx = len(E), len(EXEx)
@@ -90,6 +91,7 @@ def test():
                 # TPR(Rx, E) eq(15)
                 TPR = lEXEx/lE
                 # TNR(Rx, E) eq(16)
+                print(lE0, lE)
                 TNR = 1 - (len(Ex)-lEXEx)/(lE0-lE)
                 # Lambda eq(17)
                 L = lE/lE0

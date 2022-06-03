@@ -12,11 +12,11 @@ import gc
 import os
 
 # Reading the edges' set file ------------------------------------------------------------------------------------------
-'''net = pd.read_csv('a.txt', sep=" ", header=None)
+net = pd.read_csv('a.txt', sep=" ", header=None)
 net.columns = ["src", "dst", "tstamp"]  # Labeling columns for easier data manipulation
 net = net.sort_values(by=['tstamp'])  # Just in case Edges aren't ordered by time stamp
 net = net.reset_index(drop=True)  # Resetting indices after reordering
-print(net)'''
+print(net)
 
 # Getting N ------------------------------------------------------------------------------------------------------------
 N = int(input('Please enter N: '))
@@ -27,7 +27,7 @@ while True:  # Input conflict (In case user inputs an invalid value
         break
 
 # Time Partition -------------------------------------------------------------------------------------------------------
-'''t_min, t_max, t = P1Q1.TPartition(net, N)
+t_min, t_max, t = P1Q1.TPartition(net, N)
 print("t_min %s\nt_max" % t_min, t_max)
 print('T', t)
 
@@ -91,29 +91,35 @@ VEstar.VandEstar()
 # VEstar.GraphVandEstar()
 
 # Similarity Matrices --------------------------------------------------------------------------------------------------
-P2Q2.Similarities(N)'''
+P2Q2.Similarities(N)
 
 # ACC Function ---------------------------------------------------------------------------------------------------------
 for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
-    AcObj = P3Q1.AccFunc(N, x)
-    R = AcObj.PrvSimVal()
-    lR = len(R)
-    print(R)
-    RMin, RMax = IdMin, IdMax = 0, -1  # Min and Max values indices of R
     ESet = 'Estar[j-1,j]'
-    ACC_best = AcObj.ACC((R[IdMin], R[IdMax]), ESet)
-    itr = 0
-    while IdMin < lR - 1 and itr < 1:
-        ACC = AcObj.ACC((R[IdMin + 1], R[IdMax]), ESet)
+    AcObj = P3Q1.AccFunc(N, x, ESet)
+    R = AcObj.PrvSimVal()
+    RMin, RMax = IdMin, IdMax = 0, len(R) - 1  # Min and Max values indices of R
+    ACC_best = AcObj.ACC((R[IdMin], R[IdMax]))
+    i = 0
+    ACC_best1 = ACC_best
+    while IdMin < IdMax - 1:
+        ACC = AcObj.ACC((R[IdMin + 1], R[IdMax]))
         if ACC > ACC_best:
             ACC_best = ACC
             RMin = IdMin + 1
-        ACC = AcObj.ACC((R[IdMin], R[IdMax - 1]), ESet)
+        ACC = AcObj.ACC((R[IdMin], R[IdMax - 1]))
         if ACC > ACC_best:
             ACC_best = ACC
             RMax = IdMax - 1
+        ACC_best2 = ACC_best
+        if ACC_best1 == ACC_best2:  # To stop the while loop once the maximum accuracy isn't changing anymore
+            break
+        else:
+            ACC_best1 = ACC_best2
         IdMin += 1
-        IdMax += 1
-        itr += 1
+        IdMax -= 1
+        i += 1
+    y = 'R' + x  # Rx* name for each Similarity Measurement
+    exec("y = (R[RMin], R[RMax])")  # Applying the value to the name
     print('Best', x, 'Accuracy is', ACC_best, 'In', (R[RMin], R[RMax]))
     print('From', AcObj.AccList, '\n')
