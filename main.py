@@ -94,6 +94,8 @@ VEstar.VandEstar()
 P2Q2.Similarities(N)
 
 # ACC Function ---------------------------------------------------------------------------------------------------------
+RList = {}
+ACCListTrain = {}
 for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
     ESet = 'Estar[j-1,j]'
     AcObj = P3Q1.AccFunc(N, x, ESet)
@@ -101,7 +103,6 @@ for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
     RMin, RMax = IdMin, IdMax = 0, len(R) - 1  # Min and Max values indices of R
     ACC_best = AcObj.ACC((R[IdMin], R[IdMax]))
     i = 0
-    ACCList = {}
     ACC_best1 = ACC_best
     while IdMin < IdMax - 1:
         ACC = AcObj.ACC((R[IdMin + 1], R[IdMax]))
@@ -120,8 +121,16 @@ for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
         IdMin += 1
         IdMax -= 1
         i += 1
-    y = 'R' + x  # Rx* name for each Similarity Measurement
-    exec("y = (R[RMin], R[RMax])")  # Applying the value to the name
-    ACCList[x] = ACC_best
-    print('Best', x, 'Accuracy is', ACCList[x], 'In', (R[RMin], R[RMax]))
+    '''y = 'R' + x  # Rx* name for each Similarity Measurement
+    exec("y = (R[RMin], R[RMax])")  # Applying the value to the name'''
+    RList[x] = (R[RMin], R[RMax])
+    ACCListTrain[x] = ACC_best
+    print('Best', x, 'Train Accuracy is', ACCListTrain[x], 'In', RList[x])
 
+ACCListTest = {}
+for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
+    ESet = 'Estar[j,j+1]'
+    AcObj = P3Q1.AccFunc(N, x, ESet)
+    ACC = AcObj.ACC(RList[x])
+    ACCListTest[x] = ACC
+    print(x, 'Test Accuracy is', ACCListTest[x], 'In', RList[x])
