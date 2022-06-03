@@ -101,6 +101,7 @@ for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
     RMin, RMax = IdMin, IdMax = 0, len(R) - 1  # Min and Max values indices of R
     ACC_best = AcObj.ACC((R[IdMin], R[IdMax]))
     i = 0
+    ACCList = {}
     ACC_best1 = ACC_best
     while IdMin < IdMax - 1:
         ACC = AcObj.ACC((R[IdMin + 1], R[IdMax]))
@@ -121,5 +122,6 @@ for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
         i += 1
     y = 'R' + x  # Rx* name for each Similarity Measurement
     exec("y = (R[RMin], R[RMax])")  # Applying the value to the name
-    print('Best', x, 'Accuracy is', ACC_best, 'In', (R[RMin], R[RMax]))
-    print('From', AcObj.AccList, '\n')
+    ACCList[x] = ACC_best
+    print('Best', x, 'Accuracy is', ACCList[x], 'In', (R[RMin], R[RMax]))
+
