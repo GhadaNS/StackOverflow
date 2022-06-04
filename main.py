@@ -7,20 +7,24 @@ import P1Q3_2
 import P1Q4
 import P2Q1
 import P2Q2
-import P3Q1
+import P3Q2
+import P3Q3
 import gc
 import os
+
+
+# PART I ---------------------------------------------------------------------------------------------------------------
 
 # Reading the edges' set file ------------------------------------------------------------------------------------------
 net = pd.read_csv('a.txt', sep=" ", header=None)
 net.columns = ["src", "dst", "tstamp"]  # Labeling columns for easier data manipulation
-net = net.sort_values(by=['tstamp'])  # Just in case Edges aren't ordered by time stamp
+net = net.sort_values(by=['tstamp'])  # Order data chronologically
 net = net.reset_index(drop=True)  # Resetting indices after reordering
 print(net)
 
 # Getting N ------------------------------------------------------------------------------------------------------------
 N = int(input('Please enter N: '))
-while True:  # Input conflict (In case user inputs an invalid value
+while True:  # Input conflict (In case user inputs an invalid value)
     if N <= 0:
         N = int(input('Please enter a valid N: '))
     else:
@@ -28,8 +32,8 @@ while True:  # Input conflict (In case user inputs an invalid value
 
 # Time Partition -------------------------------------------------------------------------------------------------------
 t_min, t_max, t = P1Q1.TPartition(net, N)
-print("t_min %s\nt_max" % t_min, t_max)
-print('T', t)
+print("\nt_min: %s\nt_max:" % t_min, t_max)
+print('t:', t)
 
 # Subgraphs' Edge list creation ----------------------------------------------------------------------------------------
 Sub = P1Q2.SubGraph(N)
@@ -37,15 +41,8 @@ Sub.SubgraphEdgeLists(net, t)
 del net, t
 gc.collect()
 
-# Subgraphs' Adjacency Matrices Creation -------------------------------------------------------------------------------
-"""for i in range(1, N + 1):
-    fname = "Edges-" + str(i) + ".txt"
-    if os.stat(fname).st_size != 0:  # File is not empty
-        G = pd.read_csv(fname, sep=' ', header=None)"""
-# Sub.AdjMAt()
-
 # Subgraphs' Adjacency Lists Creation ----------------------------------------------------------------------------------
-# Sub.AdjList()
+Sub.AdjList()
 
 # Edges and Vertices of each subgraph ----------------------------------------------------------------------------------
 nV = list()  # To get the number of vertices in every time interval
@@ -69,7 +66,7 @@ for i in range(1, N + 1):
         gc.collect()
 
 # |V| and |E| time evolution Graph -------------------------------------------------------------------------------------
-# P1Q3_2.GraphVandE(nE, nV)
+P1Q3_2.GraphVandE(nE, nV)
 # P1Q3_2.PlotHisto(nV, nE).HistogramVandE()
 del nV, nE
 gc.collect()
@@ -79,58 +76,34 @@ for i in range(1, N + 1):
     fname = "Edges-" + str(i) + ".txt"
     if os.stat(fname).st_size != 0:
         G = nx.read_edgelist(fname)  # Reading the graph from previously created edge list
-        # P1Q4.Cent(G, i)
+        P1Q4.Cent(G, i)
         del G
         gc.collect()
+
+# PART II --------------------------------------------------------------------------------------------------------------
 
 # V* and E* sets -------------------------------------------------------------------------------------------------------
 VEstar = P2Q1.VstarEstar(N)
 VEstar.VandEstar()
 
 # |V*| and |E*| time evolution Graph -----------------------------------------------------------------------------------
-# VEstar.GraphVandEstar()
+VEstar.GraphVandEstar()
 
 # Similarity Matrices --------------------------------------------------------------------------------------------------
 P2Q2.Similarities(N)
 
-# ACC Function ---------------------------------------------------------------------------------------------------------
-RList = {}
-ACCListTrain = {}
-for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
-    ESet = 'Estar[j-1,j]'
-    AcObj = P3Q1.AccFunc(N, x, ESet)
-    R = AcObj.PrvSimVal()
-    RMin, RMax = IdMin, IdMax = 0, len(R) - 1  # Min and Max values indices of R
-    ACC_best = AcObj.ACC((R[IdMin], R[IdMax]))
-    i = 0
-    ACC_best1 = ACC_best
-    while IdMin < IdMax - 1:
-        ACC = AcObj.ACC((R[IdMin + 1], R[IdMax]))
-        if ACC > ACC_best:
-            ACC_best = ACC
-            RMin = IdMin + 1
-        ACC = AcObj.ACC((R[IdMin], R[IdMax - 1]))
-        if ACC > ACC_best:
-            ACC_best = ACC
-            RMax = IdMax - 1
-        ACC_best2 = ACC_best
-        if ACC_best1 == ACC_best2:  # To stop the while loop once the maximum accuracy isn't changing anymore
-            break
-        else:
-            ACC_best1 = ACC_best2
-        IdMin += 1
-        IdMax -= 1
-        i += 1
-    '''y = 'R' + x  # Rx* name for each Similarity Measurement
-    exec("y = (R[RMin], R[RMax])")  # Applying the value to the name'''
-    RList[x] = (R[RMin], R[RMax])
-    ACCListTrain[x] = ACC_best
-    print('Best', x, 'Train Accuracy is', ACCListTrain[x], 'In', RList[x])
+# PART III -------------------------------------------------------------------------------------------------------------
 
-ACCListTest = {}
+# ACC for Training Graphs ----------------------------------------------------------------------------------------------
+ACCListTrain, RList = P3Q2.TrainACC(N)
+print('\n---- Training Accuracy ----')
 for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
-    ESet = 'Estar[j,j+1]'
-    AcObj = P3Q1.AccFunc(N, x, ESet)
-    ACC = AcObj.ACC(RList[x])
-    ACCListTest[x] = ACC
+    print('Best', x, 'Train Accuracy is', ACCListTrain[x], 'In', RList[x])
+print()
+
+# ACC for Testing Graphs -----------------------------------------------------------------------------------------------
+print('\n----- Testing Accuracy -----')
+ACCListTest = P3Q3.TestACC(N, RList)
+for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
     print(x, 'Test Accuracy is', ACCListTest[x], 'In', RList[x])
+

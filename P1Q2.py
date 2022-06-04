@@ -1,3 +1,5 @@
+import gc
+
 import pandas as pd
 import P1Q3_1
 import csv
@@ -29,9 +31,9 @@ class SubGraph:
             i1 = i  # The index of the subgraph's first row
             while t[j - 1] <= net.tstamp[i] < t[j]:  # When 1 <= j < N
                 i2 = i  # The index of the subgraph's last row
-                i += 1
+                i += 1  # We increment "i" as long as condition true, to keep all values within the interval
             fname = "Edges-" + str(j) + ".txt"
-            with open(fname, "w") as f:
+            with open(fname, "w") as f:  # Save edge list in txt file
                 net.iloc[i1:i2 + 1, 0:2].to_csv(f, sep=" ", header=None, index=False)  # Writing only src & dst columns
             j += 1
         i1 = i
@@ -42,7 +44,7 @@ class SubGraph:
         with open(fname, "w") as f:
             net.iloc[i1:i2 + 1, 0:2].to_csv(f, sep=" ", header=None, index=False)
 
-    def AdjMAt(self):
+    '''def AdjMAt(self):
         for i in range(1, self.N + 1):
             fname = "Edges-" + str(i) + ".txt"
             if os.stat(fname).st_size != 0:  # File is not empty
@@ -64,19 +66,21 @@ class SubGraph:
                 with open("AdjMat" + str(i) + ".csv", "w") as f:
                     w = csv.writer(f)
                     for j in range(len(Mat)):
-                        w.writerow(Mat[j])
+                        w.writerow(Mat[j])'''
 
     def AdjList(self):
         for i in range(1, self.N + 1):
             fname = "Edges-" + str(i) + ".txt"
             if os.stat(fname).st_size != 0:  # File is not empty
                 G = pd.read_csv(fname, sep=' ', header=None)
-                V = sorted(list(P1Q3_1.GetVertices(G)))
-                AdjList = dict.fromkeys(V, [])
-                E = P1Q3_1.GetEdges(G)
+                V = sorted(list(P1Q3_1.GetVertices(G)))  # Sorted list of vertices
+                AdjList = dict.fromkeys(V, [])  # Dictionary with vertices as keys
+                E = P1Q3_1.GetEdges(G)  # df of edges
                 for key in AdjList:
-                    AdjList[key] = E[E.src == key].dst.tolist()
-                with open("AdjList" + str(i) + ".csv", "w") as f:
+                    AdjList[key] = E[E.src == key].dst.tolist()  # Adding to each dictionary key values of dst vertices
+                with open("AdjList" + str(i) + ".csv", "w") as f:  # Save Adjacency list as csv file
                     w = csv.writer(f)
                     A = [[key] + value for key, value in AdjList.items()]
                     w.writerows(A)
+                del G, V, E, AdjList, A
+                gc.collect()

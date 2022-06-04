@@ -7,6 +7,6 @@ def TPartition(net, N):
     Dt = t_max - t_min  # The whole time length
     dt = Dt / N  # The interval length
     t = [t_min + i * dt for i in range(N + 1)]  # List of time intervals
-    with open("T.csv", 'w') as f:
+    with open("T.csv", 'w') as f:  # Save time intervals in csv file
         csv.writer(f).writerow(t)
     return t_min, t_max, t

@@ -1,18 +1,23 @@
 from matplotlib import pyplot as plt
+import numpy as np
 
 
-def GraphVandE(nE, nV):
-    plt.subplots()
-    plt.plot(nV, 'c.-', label='|V|')
-    plt.plot(nE, 'm.-', label='|E|')
-    plt.title('time evolution of |V| and |E|')
-    plt.xlabel('Tj')
-    plt.legend()
+def GraphVandE(nE, nV):  # Line graphs of |E| and |V|
+    plt.rcParams['font.family'] = ['Times New Roman', 'serif']
+    plt.subplot()  # Creating one subplot
+    plt.plot(nV, 'c.-', label='|V[tj-1,tj]|')  # For creating graph of No. Vertices
+    plt.plot(nE, 'm.-', label='|E[tj-1,tj]|')  # For creating graph of No. Edges
+    plt.title('Time evolution of |V| and |E|', fontsize=12)
+    plt.xlabel('\" j \"')
+    N = len(nV)
+    plt.xticks(np.arange(0, N, 1), np.arange(1, N+1, 1))  # Setting x ticks positions 0-N & labels 1-N+1
+    plt.legend(fontsize=9)  # To display plot labels
     plt.savefig('Time_evolution_of_nV_&_nE.png', format="PNG")
     plt.show()
     plt.close()
 
-class PlotHisto():
+
+class PlotHisto():  # Histograms of both |E| and |V|
     def __init__(self, nV, nE):
         self.nV = nV
         self.nE = nE
@@ -42,8 +47,8 @@ class PlotHisto():
         self.PlotE()
         plt.tight_layout()
         plt.show()
-        # plt.clf()
         plt.close()
+
 # I thought I may need this
 # {M = math.ceil(math.log2(N))
 # if M < 5:
