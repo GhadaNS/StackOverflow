@@ -1,4 +1,5 @@
 import P3Q1
+import csv
 
 
 def TrainACC(N):
@@ -34,4 +35,14 @@ def TrainACC(N):
         # exec("y = (R[RLeft], R[RRight])")  # Applying the value to the name
         RList[x] = (R[Rl], R[Rr])
         ACCListTrain[x] = ACC_best
+        ACCListTrain = {k: v for k, v in sorted(ACCListTrain.items(), key=lambda item: item[1], reverse=True)}
+    with open("Rx.csv", "w") as f, open("TrainACC.csv", "w") as t:  # Save Rx* and TrainACC as csv file
+        w1 = csv.writer(f)
+        w2 = csv.writer(t)
+        w1.writerow(['Similarity', 'RMin', 'RMax'])
+        w2.writerow(['Similarity', 'Accuracy'])
+        A = [[key] + [value[0], value[1]] for key, value in RList.items()]
+        B = [[key, value] for key, value in ACCListTrain.items()]
+        w1.writerows(A)
+        w2.writerows(B)
     return ACCListTrain, RList

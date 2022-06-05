@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import os
 import gc
+import sys
 
 
 class AccFunc:
@@ -11,6 +12,7 @@ class AccFunc:
         self.x = x
         self.AccList = None
         self.ESet = ESet
+        self.Eps = sys.float_info.epsilon
 
     def PrvSimVal(self):  # Estar[j-1,j] Similarity values for training purposes
         R = set()
@@ -47,7 +49,7 @@ class AccFunc:
                 # TPR(Rx, E) eq(15)
                 TPR = lEXEx / lE
                 # TNR(Rx, E) eq(16)
-                TNR = 1 - (len(Ex) - lEXEx) / (lE0 - lE)
+                TNR = 1 - ((len(Ex) - lEXEx) + self.Eps) / ((lE0 - lE) + self.Eps)
                 # Lambda eq(17)
                 L = lE / lE0
                 # ACC Calculation
