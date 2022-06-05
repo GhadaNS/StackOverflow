@@ -17,11 +17,11 @@ import os
 # PART I ---------------------------------------------------------------------------------------------------------------
 
 # Reading the edges' set file ------------------------------------------------------------------------------------------
-'''net = pd.read_csv('a.txt', sep=" ", header=None)
+net = pd.read_csv("a.txt", sep=" ", header=None)
 net.columns = ["src", "dst", "tstamp"]  # Labeling columns for easier data manipulation
 net = net.sort_values(by=['tstamp'])  # Order data chronologically
 net = net.reset_index(drop=True)  # Resetting indices after reordering
-print(net)'''
+print(net)
 
 # Getting N ------------------------------------------------------------------------------------------------------------
 N = int(input('Please enter N: '))
@@ -32,7 +32,7 @@ while True:  # Input conflict (In case user inputs an invalid value)
         break
 
 # Time Partition -------------------------------------------------------------------------------------------------------
-'''t_min, t_max, t = P1Q1.TPartition(net, N)
+t_min, t_max, t = P1Q1.TPartition(net, N)
 print("\nt_min: %s\nt_max:" % t_min, t_max)
 print('t:', t)
 
@@ -77,7 +77,7 @@ for i in range(1, N + 1):
     fname = "Edges-" + str(i) + ".txt"
     if os.stat(fname).st_size != 0:
         G = nx.read_edgelist(fname)  # Reading the graph from previously created edge list
-        # P1Q4.Cent(G, i)
+        P1Q4.Cent(G, i)
         del G
         gc.collect()
 
@@ -91,7 +91,7 @@ VEstar.VandEstar()
 VEstar.GraphVandEstar()
 
 # Similarity Matrices --------------------------------------------------------------------------------------------------
-P2Q2.Similarities(N)'''
+P2Q2.Similarities(N)
 
 # PART III -------------------------------------------------------------------------------------------------------------
 
@@ -111,11 +111,11 @@ print(ACCListTrain)
 # ACC for Testing Graphs -----------------------------------------------------------------------------------------------
 print('\n----- Testing Accuracy ----- Descending Order')
 ACCListTest = P3Q3.TestACC(N, RList)
-ACCListTest = {k: v for k, v in sorted(ACCListTest.items(), key=lambda item: item[1], reverse=True)}
 print(ACCListTest)
 '''for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
     print(x, 'Test Accuracy is', ACCListTest[x], 'In', RList[x])'''
 
+# Plotting ACC Results -------------------------------------------------------------------------------------------------
 P3Extra.HistACC(ACCListTrain, ACCListTest)
 P3Extra.Hist(ACCListTrain, 'Train')
 P3Extra.Hist(ACCListTest, 'Test')

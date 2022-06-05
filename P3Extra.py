@@ -24,8 +24,8 @@ def HistACC(Train, Test):
 
 
 def Hist(ACC, Str):
-    X = ['GD', 'CN', 'JC', 'A', 'PA']
-    T = [ACC[x] for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']]
+    X = list(ACC.keys())
+    T = list(ACC.values())
     fig, ax = plt.subplots()
     ax.set_title(Str + "ing Accuracy", fontsize=10)
     for s in ['top', 'bottom', 'left', 'right']:  # Remove axes splines
