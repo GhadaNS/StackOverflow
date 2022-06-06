@@ -13,8 +13,8 @@ def GraphVandE(nE, nV):  # Line graphs of |E| and |V|
     '''N = len(nV)
     plt.xticks(np.arange(0, N, 9), np.arange(1, N+1, 9))  # Setting x ticks positions 0-N & labels 1-N+1'''
     plt.legend(fontsize=9)  # To display plot labels
-    plt.savefig('Time_evolution_of_nV_&_nE.png', format="PNG")
-    plt.show()
+    plt.savefig('Time_evolution_of_nV_&_nE.png')
+    # plt.show()
     plt.close()
 
 

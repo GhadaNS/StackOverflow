@@ -96,6 +96,6 @@ def Cent(G, i):
     gc.collect()
 
     plt.tight_layout()
-    plt.savefig('Centrality_Measures_G' + str(i) + '.png', format="PNG")  # Saving plot as png file
+    plt.savefig('Centrality_Measures_G' + str(i) + '.png')  # Saving plot as png file
     # plt.show()  # Displaying plot
     plt.close()  # Closing plot

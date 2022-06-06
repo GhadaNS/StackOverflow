@@ -17,9 +17,11 @@ def HistACC(Train, Test):
     plt.bar(x_axis - 0.1, Tr, width=0.2, label='Training ACC')
     plt.bar(x_axis + 0.1, Ts, width=0.2, label='Testing ACC')
     plt.xticks(x_axis, X)
+    plt.xlabel('Similarity Measures')
+    plt.ylabel('Accuracy')
     plt.legend()
-    plt.savefig('Training & Testing Accuracy.png', format="PNG")  # Saving plot as png file
-    plt.show()
+    plt.savefig('Training & Testing Accuracy.png')  # Saving plot as png file
+    # plt.show()
     plt.close()
 
 
@@ -37,6 +39,8 @@ def Hist(ACC, Str):
     ax.yaxis.set_tick_params(pad=10)
     bars = ax.barh(X, T, 0.4)
     ax.bar_label(bars, padding=3)
-    ax.invert_yaxis()  # Show top values
-    plt.savefig(Str + 'ing Accuracy.png', format="PNG")  # Saving plot as png file
-    plt.show()
+    plt.ylabel('Similarity Measures')
+    plt.xlabel('Accuracy')
+    plt.savefig(Str + 'ing Accuracy.png')  # Saving plot as png file
+    # plt.show()
+    plt.close()

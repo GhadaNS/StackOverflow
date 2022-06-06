@@ -79,12 +79,12 @@ class VstarEstar:
         plt.plot(self.nEstar1, 'c.-', label='|E*[tj-1,tj]|')
         plt.plot(self.nEstar2, 'y.-', label='|E*[tj,tj+1]|')
         plt.legend(fontsize=9)  # To display plot labels
-        plt.title('Time evolution of the volumes |V*[tj-1,tj+1]|, |E*[tj-1,tj]| and |E*[tj,tj+1]|', fontsize=12)
+        plt.title('Time evolution of |V*[tj-1,tj+1]|, |E*[tj-1,tj]| and |E*[tj,tj+1]|', fontsize=12)
         plt.xlabel('Time intervals')
         plt.ylabel('Set cardinality')
         # plt.xticks(np.arange(0, self.N-1, 1), np.arange(1, self.N, 1)) # Setting x ticks positions 0-(N-1) & labels 1-N
-        plt.savefig('Time_evolution_of_nVstar_&_nEstar.png', format="PNG")
-        plt.show()
+        plt.savefig('Time_evolution_of_nVstar_&_nEstar.png')
+        # plt.show()
         plt.close()
         del self.nVstar, self.nEstar1, self.nEstar2
         gc.collect()

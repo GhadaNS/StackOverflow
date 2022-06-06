@@ -34,7 +34,7 @@ while True:  # Input conflict (In case user inputs an invalid value)
 # Time Partition -------------------------------------------------------------------------------------------------------
 t_min, t_max, t = P1Q1.TPartition(net, N)
 print("\nt_min: %s\nt_max:" % t_min, t_max)
-print('t:', t)
+print('t:', t, '\n')
 
 # Subgraphs' Edge list creation ----------------------------------------------------------------------------------------
 Sub = P1Q2.SubGraph(N)
@@ -68,6 +68,7 @@ for i in range(1, N + 1):
 
 # |V| and |E| time evolution Graph -------------------------------------------------------------------------------------
 P1Q3_2.GraphVandE(nE, nV)
+print("---Plotting graph of |V[tj-1,tj]| and |E[tj-1,tj]| Time evolution finished---")
 # P1Q3_2.PlotHisto(nV, nE).HistogramVandE()
 del nV, nE
 gc.collect()
@@ -80,6 +81,7 @@ for i in range(1, N + 1):
         P1Q4.Cent(G, i)
         del G
         gc.collect()
+print("---Plotting Centrality histograms finished---")
 
 # PART II --------------------------------------------------------------------------------------------------------------
 
@@ -89,6 +91,7 @@ VEstar.VandEstar()
 
 # |V*| and |E*| time evolution Graph -----------------------------------------------------------------------------------
 VEstar.GraphVandEstar()
+print("---Plotting graph of |V*[tj-1,tj+1]|, |E*[tj-1,tj]| and |E*[tj,tj+1]| Time evolution finished---")
 
 # Similarity Matrices --------------------------------------------------------------------------------------------------
 P2Q2.Similarities(N)
@@ -103,13 +106,13 @@ print(RList)
     print('Best', x, 'Rx* is', RList[x])'''
 
 # ACC for Training Graphs ----------------------------------------------------------------------------------------------
-print('\n---- Training Accuracy ---- Descending Order')
+print('\n---- Training Accuracy ---- Ranked from highest to lowest')
 print(ACCListTrain)
 '''for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
     print('Best', x, 'Train Accuracy is', ACCListTrain[x], 'In', RList[x])'''
 
 # ACC for Testing Graphs -----------------------------------------------------------------------------------------------
-print('\n----- Testing Accuracy ----- Descending Order')
+print('\n----- Testing Accuracy ----- Ranked from highest to lowest')
 ACCListTest = P3Q3.TestACC(N, RList)
 print(ACCListTest)
 '''for x in ['Sgd', 'Scn', 'Sjc', 'Sa', 'Spa']:
@@ -117,5 +120,8 @@ print(ACCListTest)
 
 # Plotting ACC Results -------------------------------------------------------------------------------------------------
 P3Extra.HistACC(ACCListTrain, ACCListTest)
+print("\n---Plotting Accuracy bar chart finished---")
 P3Extra.Hist(ACCListTrain, 'Train')
+print("---Plotting Training Accuracy histogram finished---")
 P3Extra.Hist(ACCListTest, 'Test')
+print("---Plotting Testing Accuracy histogram finished---")
