@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-import numpy as np
+# import numpy as np
 
 
 def GraphVandE(nE, nV):  # Line graphs of |E| and |V|
@@ -7,17 +7,18 @@ def GraphVandE(nE, nV):  # Line graphs of |E| and |V|
     plt.subplot()  # Creating one subplot
     plt.plot(nV, 'c.-', label='|V[tj-1,tj]|')  # For creating graph of No. Vertices
     plt.plot(nE, 'm.-', label='|E[tj-1,tj]|')  # For creating graph of No. Edges
-    plt.title('Time evolution of |V| and |E|', fontsize=12)
-    plt.xlabel('\" j \"')
-    N = len(nV)
-    plt.xticks(np.arange(0, N, 1), np.arange(1, N+1, 1))  # Setting x ticks positions 0-N & labels 1-N+1
+    plt.title('Time evolution of |V[tj-1,tj]| and |E[tj-1,tj]|', fontsize=12)
+    plt.xlabel('Time intervals')
+    plt.ylabel('Set cardinality')
+    '''N = len(nV)
+    plt.xticks(np.arange(0, N, 9), np.arange(1, N+1, 9))  # Setting x ticks positions 0-N & labels 1-N+1'''
     plt.legend(fontsize=9)  # To display plot labels
     plt.savefig('Time_evolution_of_nV_&_nE.png', format="PNG")
     plt.show()
     plt.close()
 
 
-class PlotHisto():  # Histograms of both |E| and |V|
+class PlotHisto:  # Histograms of both |E| and |V|
     def __init__(self, nV, nE):
         self.nV = nV
         self.nE = nE
