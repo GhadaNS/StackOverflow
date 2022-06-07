@@ -15,37 +15,3 @@ def GraphVandE(nE, nV):  # Line graphs of |E| and |V|
     plt.savefig('Time_evolution_of_nV_&_nE.png')
     # plt.show()
     plt.close()
-
-
-'''class PlotHisto:  # Histograms of both |E| and |V|
-    def __init__(self, nV, nE):
-        self.nV = nV
-        self.nE = nE
-
-    def PlotV(self):
-        y = self.nV
-        N = len(y)
-        x = range(N)
-        plt.subplot(1, 2, 1)
-        plt.title('Vertices Histogram')
-        plt.xlabel('Time Intervals Bins')
-        plt.ylabel('Number of Vertices')
-        plt.bar(x, y, align='edge', color="cyan")
-
-    def PlotE(self):
-        y = self.nE
-        N = len(y)
-        x = range(N)
-        plt.subplot(1, 2, 2)
-        plt.title('Edges Histogram')
-        plt.xlabel('Time Intervals Bins')
-        plt.ylabel('Number of Edges')
-        plt.bar(x, y, align='edge', color="magenta")
-
-    def HistogramVandE(self):
-        self.PlotV()
-        self.PlotE()
-        plt.savefig('nV_&_nE_Histograms.png')
-        plt.tight_layout()
-        # plt.show()
-        plt.close()'''
