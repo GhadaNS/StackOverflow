@@ -1,28 +1,14 @@
-import gc
-
 import pandas as pd
 import P1Q3_1
 import csv
 import os
+import gc
 
 
 class SubGraph:
 
     def __init__(self, N):
         self.N = N
-
-    """def PrintMatrix(self, mat):
-        # Loop over all rows
-        for k in range(0, len(mat)):
-            print("[", end="")
-            # Loop over each column in row i
-            for t in range(0, len(mat[k])):
-                # Print out the value in row i, column j
-                print(mat[k][t], end="")
-                # Only add a tab if we're not in the last column
-                if t != len(mat[k]) - 1:
-                    print("\t", end="")
-            print("]\n")"""
 
     def SubgraphEdgeLists(self, net, t):
         i = 0  # For iterating through df rows
@@ -36,39 +22,14 @@ class SubGraph:
             with open(fname, "w") as f:  # Save edge list in txt file
                 net.iloc[i1:i2 + 1, 0:2].to_csv(f, sep=" ", header=None, index=False)  # Writing only src & dst columns
             j += 1
+        #  Once j == N, All the rest of the edges belong to the last subgraph
         i1 = i
-        while i < len(net.index) and t[j - 1] <= net.tstamp[i] <= t[j]:  # When j == N
-            i2 = i
-            i += 1
+        i2 = len(net.index) - 1
         fname = "Edges-" + str(j) + ".txt"
         with open(fname, "w") as f:
             net.iloc[i1:i2 + 1, 0:2].to_csv(f, sep=" ", header=None, index=False)
 
-    '''def AdjMAt(self):
-        for i in range(1, self.N + 1):
-            fname = "Edges-" + str(i) + ".txt"
-            if os.stat(fname).st_size != 0:  # File is not empty
-                G = pd.read_csv(fname, sep=' ', header=None)
-                V = sorted(list(P1Q3_1.GetVertices(G)))
-                Map = {}  # Mapping the list of Vertices from user IDs to a sequence of integers
-                k = 0  # so we can create the adjacency matrix
-                for vertex in V:
-                    Map[vertex] = k
-                    k += 1
-                E = P1Q3_1.GetEdges(G)
-                E = E.applymap(lambda x: Map[x])
-                N = len(V)
-                Mat = [[0] * N for _ in range(N)]
-                for j in range(len(E.index)):
-                    u = E.src[j]
-                    v = E.dst[j]
-                    Mat[u][v] = 1
-                with open("AdjMat" + str(i) + ".csv", "w") as f:
-                    w = csv.writer(f)
-                    for j in range(len(Mat)):
-                        w.writerow(Mat[j])'''
-
-    def AdjList(self):
+    def AdjLists(self):
         for i in range(1, self.N + 1):
             fname = "Edges-" + str(i) + ".txt"
             if os.stat(fname).st_size != 0:  # File is not empty
@@ -78,7 +39,7 @@ class SubGraph:
                 E = P1Q3_1.GetEdges(G)  # df of edges
                 for key in AdjList:
                     AdjList[key] = E[E.src == key].dst.tolist()  # Adding to each dictionary key values of dst vertices
-                with open("AdjList" + str(i) + ".csv", "w") as f:  # Save Adjacency list as csv file
+                with open("AdjList-" + str(i) + ".csv", "w") as f:  # Save Adjacency list as csv file
                     w = csv.writer(f)
                     A = [[key] + value for key, value in AdjList.items()]
                     w.writerows(A)
