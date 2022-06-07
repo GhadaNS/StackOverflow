@@ -1,4 +1,7 @@
+import pandas as pd
 import csv
+import os
+import gc
 
 
 def GetEdges(G):
@@ -25,3 +28,26 @@ def GetVertices(G):
 def SaveVertices(V, i):
     with open("VerticesSet-" + str(i) + ".csv", 'w') as f:  # Vertices set in csv file
         csv.writer(f).writerow(V)
+
+
+def nVandnE(N):
+    nV = list()  # To get the number of vertices in every time interval
+    nE = list()  # To get the number of edges in every time interval
+    for i in range(1, N + 1):
+        fname = "Edges-" + str(i) + ".txt"
+        if os.stat(fname).st_size == 0:  # In case some time intervals have empty Subgraphs
+            nE.append(0)  # The number of both vertices & edges is 0
+            nV.append(0)
+            open("VerticesSet-" + str(i) + ".csv", 'w').close()
+            open("EdgesSet-" + str(i) + ".csv", 'w').close()
+        else:
+            G = pd.read_csv(fname, sep=' ', header=None)
+            E = GetEdges(G)
+            SaveEdges(E, i)
+            V = GetVertices(G)
+            SaveVertices(V, i)
+            nE.append(len(E.index))
+            nV.append(len(V))
+            del G, E, V
+            gc.collect()
+    return nV, nE
