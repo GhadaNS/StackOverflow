@@ -1,5 +1,4 @@
 from matplotlib import pyplot as plt
-# import numpy as np
 
 
 def GraphVandE(nE, nV):  # Line graphs of |E| and |V|
@@ -18,7 +17,7 @@ def GraphVandE(nE, nV):  # Line graphs of |E| and |V|
     plt.close()
 
 
-class PlotHisto:  # Histograms of both |E| and |V|
+'''class PlotHisto:  # Histograms of both |E| and |V|
     def __init__(self, nV, nE):
         self.nV = nV
         self.nE = nE
@@ -46,36 +45,7 @@ class PlotHisto:  # Histograms of both |E| and |V|
     def HistogramVandE(self):
         self.PlotV()
         self.PlotE()
+        plt.savefig('nV_&_nE_Histograms.png')
         plt.tight_layout()
-        plt.show()
-        plt.close()
-
-# I thought I may need this
-# {M = math.ceil(math.log2(N))
-# if M < 5:
-#    M = N
-# else:
-#    M = M * 3
-# Tj = ['T'+str(i) for i in range(1, N+1)]
-# plt.xticks(list(np.arange(N)), Tj)} I tried to use ticks that shrink when size gets bigger --> disappointment
-
-
-# Bar chart ------------------------------------------------------------------------------------------------------------
-
-# set width of bar
-# barWidth = 0.25
-# plt.subplots(figsize=(8, 6))
-
-# Set position of bar on X axis
-# br1 = np.arange(len(nV))
-# br2 = [x + barWidth for x in br1]
-
-# Make the plot
-# plt.bar(br1, nV, color='b', edgecolor='grey', width=barWidth, label='|V|')
-# plt.bar(br2, nE, color='r', edgecolor='grey', width=barWidth, label='|E|')
-
-# Adding Xticks
-# plt.xlabel('Tj')
-
-# plt.legend()
-# plt.show()
+        # plt.show()
+        plt.close()'''
