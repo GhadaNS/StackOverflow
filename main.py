@@ -24,12 +24,13 @@ net = net.reset_index(drop=True)  # Resetting indices after reordering
 print(net)
 
 # Getting N ------------------------------------------------------------------------------------------------------------
-N = int(input('Please enter N: '))
+N = input('Please enter \"N\" the number of the network\'s time partitions: ')
 while True:  # Input conflict (In case user inputs an invalid value)
-    if N <= 0:
-        N = int(input('Please enter a valid N: '))
+    if not N.isnumeric() or int(N) == 0:  # Input != number or Input == 0
+        N = input('Please enter a valid N: ')  # Read input again
     else:
         break
+N = int(N)
 
 # Time Partition -------------------------------------------------------------------------------------------------------
 t_min, t_max, t = P1Q1.TPartition(net, N)
@@ -43,33 +44,12 @@ del net, t
 gc.collect()
 
 # Subgraphs' Adjacency Lists Creation ----------------------------------------------------------------------------------
-Sub.AdjList()
-
-# Edges and Vertices of each subgraph ----------------------------------------------------------------------------------
-nV = list()  # To get the number of vertices in every time interval
-nE = list()  # To get the number of edges in every time interval
-for i in range(1, N + 1):
-    fname = "Edges-" + str(i) + ".txt"
-    if os.stat(fname).st_size == 0:  # In case some time intervals have empty Subgraphs
-        nE.append(0)  # The number of both vertices & edges is 0
-        nV.append(0)
-        open("VerticesSet-" + str(i) + ".csv", 'w').close()
-        open("EdgesSet-" + str(i) + ".csv", 'w').close()
-    else:
-        G = pd.read_csv(fname, sep=' ', header=None)
-        E = P1Q3_1.GetEdges(G)
-        P1Q3_1.SaveEdges(E, i)
-        V = P1Q3_1.GetVertices(G)
-        P1Q3_1.SaveVertices(V, i)
-        nE.append(len(E.index))
-        nV.append(len(V))
-        del G, E, V
-        gc.collect()
+Sub.AdjLists()
 
 # |V| and |E| time evolution Graph -------------------------------------------------------------------------------------
+nV, nE = P1Q3_1.nVandnE(N)
 P1Q3_2.GraphVandE(nE, nV)
 print("---Plotting graph of |V[tj-1,tj]| and |E[tj-1,tj]| Time evolution finished---")
-# P1Q3_2.PlotHisto(nV, nE).HistogramVandE()
 del nV, nE
 gc.collect()
 
