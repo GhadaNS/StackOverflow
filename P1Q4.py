@@ -1,9 +1,8 @@
-import gc
-
 from matplotlib import pyplot as plt
 import networkx as nx
 import numpy as np
 import csv
+import gc
 
 
 def Cent(G, i):

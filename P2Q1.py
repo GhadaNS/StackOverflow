@@ -30,7 +30,7 @@ class VstarEstar:
                 Vstar = [i for i in Vprev if i in Vnext]  # V*[tj-1,tj+1] = intersect(V[tj-1,tj], V[tj,tj+1])
                 del Vprev, Vnext
                 gc.collect()
-                if len(Vstar) == 0:  # If |V*| there will be no edges
+                if len(Vstar) == 0:  # If |V*| == 0 there will be no edges
                     self.nVstar.append(0)  # The number of both vertices & edges is 0
                     self.nEstar1.append(0)
                     self.nEstar2.append(0)
