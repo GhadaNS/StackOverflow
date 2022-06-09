@@ -17,7 +17,8 @@ import os
 # PART I ---------------------------------------------------------------------------------------------------------------
 
 # Reading the edges' set file ------------------------------------------------------------------------------------------
-net = pd.read_csv("a.txt", sep=" ", header=None)
+net = pd.read_csv("C:/Users/naits/Documents/UnivPi/SN/sx-stackoverflow.txt", sep=" ", header=None)
+net = net.iloc[:1001, :]  # First 10k Edges
 net.columns = ["src", "dst", "tstamp"]  # Labeling columns for easier data manipulation
 net = net.sort_values(by=['tstamp'])  # Order data chronologically
 net = net.reset_index(drop=True)  # Resetting indices after reordering
