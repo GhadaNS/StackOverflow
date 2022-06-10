@@ -32,9 +32,9 @@ def Cent(G, i):
     '''plt.xlabel('Degree centrality')
     plt.ylabel('Frequency')
     plt.show()'''
-    w = csv.writer(open("Degree_centrality_G" + str(i) + ".csv", "w"))
+    '''w = csv.writer(open("Degree_centrality_G" + str(i) + ".csv", "w"))
     for key, val in dc.items():  # Saving centrality values in csv file
-        w.writerow([key, val])
+        w.writerow([key, val])'''
     del dc  # We delete pointer to dc values for space optimization
     gc.collect()  # For the actual deletion of the values
     # Same goes for the rest of the centrality measures
@@ -51,9 +51,9 @@ def Cent(G, i):
     '''plt.xlabel('Closeness centrality')
     plt.ylabel('Frequency')
     plt.show()'''
-    w = csv.writer(open("Closeness_centrality_G" + str(i) + ".csv", "w"))
+    '''w = csv.writer(open("Closeness_centrality_G" + str(i) + ".csv", "w"))
     for key, val in cc.items():
-        w.writerow([key, val])
+        w.writerow([key, val])'''
     del cc
     gc.collect()
 
@@ -63,9 +63,9 @@ def Cent(G, i):
     x = list(bc.values())
     axs[0, 2].hist(x, color="#8B8000", edgecolor='black', weights=np.ones_like(x) / len(x))
     axs[0, 2].set_title('Betweenness centrality', fontsize=10)
-    w = csv.writer(open("Betweenness_centrality_G" + str(i) + ".csv", "w"))
+    '''w = csv.writer(open("Betweenness_centrality_G" + str(i) + ".csv", "w"))
     for key, val in bc.items():
-        w.writerow([key, val])
+        w.writerow([key, val])'''
     del bc
     gc.collect()
 
@@ -76,21 +76,21 @@ def Cent(G, i):
     axs[1, 0].hist(x, color="#d2691e", edgecolor='black', weights=np.ones_like(x) / len(x))
     axs[1, 0].set_title('Eigenvector centrality', fontsize=10)
     axs[1, 0].set_ylabel('Relative Frequency', fontsize=8)
-    w = csv.writer(open("Eigenvector_centrality_G" + str(i) + ".csv", "w"))
+    '''w = csv.writer(open("Eigenvector_centrality_G" + str(i) + ".csv", "w"))
     for key, val in ec.items():
-        w.writerow([key, val])
+        w.writerow([key, val])'''
     del ec
     gc.collect()
 
     # Katz Centrality
-    kc = nx.katz_centrality(G)
+    kc = nx.katz_centrality_numpy(G)
     kc = dict(sorted(kc.items(), key=lambda item: item[1]))  # Sort by value
     x = list(kc.values())
     axs[1, 1].hist(x, color="#006400", edgecolor='black', weights=np.ones_like(x) / len(x))
     axs[1, 1].set_title('Katz centrality', fontsize=10)
-    w = csv.writer(open("Katz_centrality_G" + str(i) + ".csv", "w"))
+    '''w = csv.writer(open("Katz_centrality_G" + str(i) + ".csv", "w"))
     for key, val in kc.items():
-        w.writerow([key, val])
+        w.writerow([key, val])'''
     del kc
     gc.collect()
 
