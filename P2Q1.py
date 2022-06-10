@@ -8,7 +8,7 @@ import os
 
 class VstarEstar:
     def __init__(self, N):
-        self.N = int(N)
+        self.N = N
         self.nVstar: list = []
         self.nEstar1: list = []
         self.nEstar2: list = []
