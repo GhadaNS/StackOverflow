@@ -2,5 +2,5 @@
 Project | University of Piraeus 2022
 
 Program by:
-Ghada Nait Said
-Ahmed Nait Said
+- Ghada Nait Said
+- Ahmed Nait Said
